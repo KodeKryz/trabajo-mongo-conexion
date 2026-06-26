@@ -10,10 +10,11 @@ mongo_uri = os.getenv("MONGO_URI")
 try:
     #conectamos el mongo client con la variable mongo uri
     cliente=MongoClient(mongo_uri)
-    print("¡Conexión exitosa a MongoDB!🎉✅")
+    cliente.admin.command("ping")
+    print("¡Conexión exitosa a MongoDB!")
 
 except  Exception as e:
-    print(f" Error en la conexion de la bd ✖️ {e}")
+    print(f" error en la conexion de la bd {e}")
 
 # Elegir la base de datos
 db_ecommerce_marketing = cliente["ecommerce_marketing"]
@@ -442,27 +443,30 @@ for i in cantidad_confirmados:
 
 #3.1.1.I.2.---Implementa el Requerimiento 1: Lista todos los eventos mostrando código, nombre, fecha, lugar y categoría.-
 
-proyeccion = {
-    "codigo": 1, 
-    "nombre": 1, 
-    "fecha": 1, 
-    "lugar": 1, 
-    "categoria": 1, 
+cuando_el_profe_me_pide_que_me_proyecte_y_me_empiezo_a_proyectar = {
+    "codigo": 1,
+    "nombre": 1,
+    "fecha": 1,
+    "lugar": 1,
+    "categoria": 1,
     "_id": 0  
 }
-eventos = coleccion_eventos.find({}, proyeccion)
+eventos = coleccion_eventos.find({}, cuando_el_profe_me_pide_que_me_proyecte_y_me_empiezo_a_proyectar)
 print("Código                 Nombre              Fecha                  Lugar          Categoría")
 for i in eventos:
     print(i["codigo"], "\t", i["nombre"], "\t", i["fecha"], "\t", i["lugar"], "\t", i["categoria"])
 
 #3.1.1.I.3.-----Selecciona filtros adecuados para consultar eventos según criterios específicos (fecha, categoría, etc.).---------
-
 empresaX=coleccion_invitados.find({"empresa":"EmpresaX"})
 for a in empresaX:
     print(a)
 #idk si nesesito hacer mas de uno pero es basicamnete lo mismo entre uno y otro
+"""
+    SI, ES NECESARIO. DEBES DE CREAR [[ C O N S U L T A S ]] POR CADA campo DISPONIBLE EN LA [[ C O L E C C I O N ]] Y QUE EVENTUALMENTE
+    EL USUARIO PUEDA ELEGIR SEGUN QUE CRITERIO [[ C O N S U L T A R ]] 🥚
+"""
 
-#3.1.1.I.3.---Selecciona filtros adecuados para consultar eventos según criterios específicos (fecha, categoría, etc.).
+#3.1.1.I.4.---
 
 regex=coleccion_invitados.find({
     "nombre":{"$regex":r"^A",
@@ -470,7 +474,11 @@ regex=coleccion_invitados.find({
 })
 for i in regex:
     print(i)
-#si hubiera una persona que su nombre empieze por una minuscula estaria aqui igual pero como la ia escribe bien no hay nombres partiendo con minuscula
+#si hubiera una ersona que su nombre empieze por una minuscula estaria aqui igual pero como la ia escribe bien no hay nombres partiendo con minuscula
+"""
+    EL USUARIO DEBE DE ELEGIR SEGUN QUE NOMBRE ESCRITO PUEDE [[ C O N S U L T A R ]] 🥚
+"""
+
 
 #3.1.2.I.5.---Aplica expresiones regulares correctamente para filtrar invitados por dominio de correo (ej: @empresa.cl).
 
@@ -484,7 +492,7 @@ for i in inacapmail:
 
 #3.1.3.I.6. ---Ejecuta búsquedas en subdocumentos (array invitados dentro de eventos) para verificar asignación y confirmación.
 
-print("Ingrese el rut para saber en que eventos asistira")
+print("por el rut para saber en que eventos asistira")
 rut=input("")
 
 ver_evento = coleccion_eventos.find({
@@ -499,9 +507,7 @@ ver_evento = coleccion_eventos.find({
 for i in ver_evento:
     print("Código:", i["codigo"], "   ", i["nombre"])
 
-
 #3.1.3.I.7. ---Implementa el Requerimiento 4: Obtiene Top 3 eventos con mayor cantidad de confirmados mediante consultas de agregación."""
-
 cantidad_confirmados = coleccion_eventos.aggregate([
     # 1. Desarmar el array de invitados
     {
@@ -532,9 +538,3 @@ cantidad_confirmados = coleccion_eventos.aggregate([
 ])
 for i in  cantidad_confirmados:
     print(i)
-
-
-
-
-
-
