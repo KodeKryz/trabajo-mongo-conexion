@@ -1,6 +1,7 @@
 import os
 from dotenv import load_dotenv
 from pymongo import MongoClient
+import funciones
 # Cargar las variables de entorno desde el archivo .env
 load_dotenv()
 
@@ -417,124 +418,7 @@ def insercion_inicial_coleccion_invitados() -> None:
 #coleccion_invitados.drop()
 #coleccion_eventos.drop()
 
+funciones.menu(coleccion_eventos, coleccion_invitados)
 
 
-#-pipeline basico-----------------------------------------------------------------------
 
-cantidad_confirmados=coleccion_eventos.aggregate([
-    {
-        "$unwind": "$invitados"
-    },
-    {
-        "$match":{
-            "invitados.estado":"confirmado"
-        }
-    },
-    {
-        "$group":{
-            "_id":"$categoria",
-            "totalconfirmados":{"$sum": 1}
-        }
-    }
-])
-for i in cantidad_confirmados:
-    print(i)
-
-
-#3.1.1.I.2.---Implementa el Requerimiento 1: Lista todos los eventos mostrando código, nombre, fecha, lugar y categoría.-
-
-cuando_el_profe_me_pide_que_me_proyecte_y_me_empiezo_a_proyectar = {
-    "codigo": 1,
-    "nombre": 1,
-    "fecha": 1,
-    "lugar": 1,
-    "categoria": 1,
-    "_id": 0  
-}
-eventos = coleccion_eventos.find({}, cuando_el_profe_me_pide_que_me_proyecte_y_me_empiezo_a_proyectar)
-print("Código                 Nombre              Fecha                  Lugar          Categoría")
-for i in eventos:
-    print(i["codigo"], "\t", i["nombre"], "\t", i["fecha"], "\t", i["lugar"], "\t", i["categoria"])
-
-#3.1.1.I.3.-----Selecciona filtros adecuados para consultar eventos según criterios específicos (fecha, categoría, etc.).---------
-empresaX=coleccion_invitados.find({"empresa":"EmpresaX"})
-for a in empresaX:
-    print(a)
-#idk si nesesito hacer mas de uno pero es basicamnete lo mismo entre uno y otro
-"""
-    SI, ES NECESARIO. DEBES DE CREAR [[ C O N S U L T A S ]] POR CADA campo DISPONIBLE EN LA [[ C O L E C C I O N ]] Y QUE EVENTUALMENTE
-    EL USUARIO PUEDA ELEGIR SEGUN QUE CRITERIO [[ C O N S U L T A R ]] 🥚
-"""
-
-#3.1.1.I.4.---
-
-regex=coleccion_invitados.find({
-    "nombre":{"$regex":r"^A",
-    "$options":"i"}
-})
-for i in regex:
-    print(i)
-#si hubiera una ersona que su nombre empieze por una minuscula estaria aqui igual pero como la ia escribe bien no hay nombres partiendo con minuscula
-"""
-    EL USUARIO DEBE DE ELEGIR SEGUN QUE NOMBRE ESCRITO PUEDE [[ C O N S U L T A R ]] 🥚
-"""
-
-
-#3.1.2.I.5.---Aplica expresiones regulares correctamente para filtrar invitados por dominio de correo (ej: @empresa.cl).
-
-inacapmail=coleccion_invitados.find({
-    "correo": {
-        "$regex":r"@inacap.cl$",
-        "$options":"i"}
-})
-for i in inacapmail:
-    print(i)
-
-#3.1.3.I.6. ---Ejecuta búsquedas en subdocumentos (array invitados dentro de eventos) para verificar asignación y confirmación.
-
-print("por el rut para saber en que eventos asistira")
-rut=input("")
-
-ver_evento = coleccion_eventos.find({
-    "invitados": {
-        "$elemMatch": {
-            "rut": rut,
-            "estado": "confirmado"
-        }
-    }
-})
-
-for i in ver_evento:
-    print("Código:", i["codigo"], "   ", i["nombre"])
-
-#3.1.3.I.7. ---Implementa el Requerimiento 4: Obtiene Top 3 eventos con mayor cantidad de confirmados mediante consultas de agregación."""
-cantidad_confirmados = coleccion_eventos.aggregate([
-    # 1. Desarmar el array de invitados
-    {
-        "$unwind": "$invitados"
-    },
-    {
-        "$match": {
-            "invitados.estado": "confirmado"
-        }
-    },
-    {
-        "$group": {
-            "_id": {
-                "codigo": "$codigo",
-                "nombre": "$nombre"
-            },
-            "totalconfirmados": {"$sum": 1}
-        }
-    },
-    {
-        "$sort": {
-            "totalconfirmados": -1
-        }
-    },
-    {
-        "$limit": 3
-    }
-])
-for i in  cantidad_confirmados:
-    print(i)
