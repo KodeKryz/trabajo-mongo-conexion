@@ -10,10 +10,10 @@ mongo_uri = os.getenv("MONGO_URI")
 try:
     #conectamos el mongo client con la variable mongo uri
     cliente=MongoClient(mongo_uri)
-    print("¡Conexión exitosa a MongoDB!")
+    print("¡Conexión exitosa a MongoDB!🎉✅")
 
 except  Exception as e:
-    print(f" error en la conexion de la bd {e}")
+    print(f" Error en la conexion de la bd ✖️ {e}")
 
 # Elegir la base de datos
 db_ecommerce_marketing = cliente["ecommerce_marketing"]
@@ -416,7 +416,7 @@ def insercion_inicial_coleccion_invitados() -> None:
 #coleccion_invitados.drop()
 #coleccion_eventos.drop()
 
-"""""
+
 
 #-pipeline basico-----------------------------------------------------------------------
 
@@ -456,6 +456,7 @@ for i in eventos:
     print(i["codigo"], "\t", i["nombre"], "\t", i["fecha"], "\t", i["lugar"], "\t", i["categoria"])
 
 #3.1.1.I.3.-----Selecciona filtros adecuados para consultar eventos según criterios específicos (fecha, categoría, etc.).---------
+
 empresaX=coleccion_invitados.find({"empresa":"EmpresaX"})
 for a in empresaX:
     print(a)
@@ -483,7 +484,7 @@ for i in inacapmail:
 
 #3.1.3.I.6. ---Ejecuta búsquedas en subdocumentos (array invitados dentro de eventos) para verificar asignación y confirmación.
 
-print("por el rut para saber en que eventos asistira")
+print("Ingrese el rut para saber en que eventos asistira")
 rut=input("")
 
 ver_evento = coleccion_eventos.find({
@@ -498,7 +499,9 @@ ver_evento = coleccion_eventos.find({
 for i in ver_evento:
     print("Código:", i["codigo"], "   ", i["nombre"])
 
+
 #3.1.3.I.7. ---Implementa el Requerimiento 4: Obtiene Top 3 eventos con mayor cantidad de confirmados mediante consultas de agregación."""
+
 cantidad_confirmados = coleccion_eventos.aggregate([
     # 1. Desarmar el array de invitados
     {
