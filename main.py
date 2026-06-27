@@ -6,11 +6,11 @@ import funciones
 load_dotenv()
 
 # encuentra la variable 'MONGO_URI' desde el dotenv
-mongo_uri = os.getenv("MONGO_URI")
+MONGO_URI = os.getenv("MONGO_URI")
 
 try:
     #conectamos el mongo client con la variable mongo uri
-    cliente=MongoClient(mongo_uri)
+    cliente=MongoClient(MONGO_URI)
     cliente.admin.command("ping")
     print("¡Conexión exitosa a MongoDB!")
 
@@ -415,10 +415,7 @@ insercion_inicial_coleccion_eventos()
 insercion_inicial_coleccion_invitados()
 
 #limpiar_la_base_de_datos()
-coleccion_invitados.drop()
-coleccion_eventos.drop()
+#coleccion_invitados.drop()
+#coleccion_eventos.drop()
 
 funciones.menu(coleccion_eventos, coleccion_invitados)
-
-
-
