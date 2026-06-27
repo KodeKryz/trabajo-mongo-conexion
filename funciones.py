@@ -1,17 +1,20 @@
+#3.1.1.I.2.---Implementa el Requerimiento 1: Lista todos los eventos mostrando código, nombre, fecha, lugar y categoría.-
 def primero(coleccion_eventos):
-    #3.1.1.I.2.---Implementa el Requerimiento 1: Lista todos los eventos mostrando código, nombre, fecha, lugar y categoría.-
-    proyeccion = {
-        "codigo": 1, 
-        "nombre": 1, 
-        "fecha": 1, 
-        "lugar": 1, 
-        "categoria": 1, 
-        "_id": 0  
-    }
-    eventos = coleccion_eventos.find({}, proyeccion)
-    print("Código                 Nombre              Fecha                   Lugar          Categoría")
-    for i in eventos:
-        print(i["codigo"], "\t", i["nombre"], "\t", i["fecha"], "\t", i["lugar"], "\t", i["categoria"])
+    try:
+                proyeccion = {
+                "codigo": 1, 
+                "nombre": 1, 
+                "fecha": 1, 
+                "lugar": 1, 
+                "categoria": 1, 
+                "_id": 0  
+            }
+                eventos = coleccion_eventos.find({}, proyeccion)
+                print("Código                 Nombre              Fecha                   Lugar          Categoría")
+                for i in eventos:
+                    print(i["codigo"], "\t", i["nombre"], "\t", i["fecha"], "\t", i["lugar"], "\t", i["categoria"])
+    except Exception as e:
+        print("Error al listar eventos:", e)
 
 
 def segundo(campo: str, valor: str, coleccion_eventos) -> None:
@@ -37,6 +40,7 @@ def tercero(texto_buscado: str, coleccion_invitados) -> None:
     except Exception as e:
         print("error:", e)
 
+
 def cuarto(coleccion_invitados):
     inacapmail = coleccion_invitados.find({
         "correo": {
@@ -45,6 +49,7 @@ def cuarto(coleccion_invitados):
     })
     for i in inacapmail:
         print(i)
+
 
 def quinto(rut, coleccion_eventos):
     ver_evento = coleccion_eventos.find({
@@ -60,16 +65,17 @@ def quinto(rut, coleccion_eventos):
     for i in ver_evento:
         print("EVENTO:", i["nombre"], "| Código:", i["codigo"], "| Lugar:", i["lugar"])
 
+
 def sexto(coleccion_eventos):
     cantidad_confirmados = coleccion_eventos.aggregate([
     # 1. Desarmar el array de invitados
     {
         "$unwind": "$invitados"
     },
-       {
-       "$match": {
-           "invitados.estado": "confirmado"
-        }
+        {
+        "$match": {
+            "invitados.estado": "confirmado"
+            }
     },
         {
         "$group": {

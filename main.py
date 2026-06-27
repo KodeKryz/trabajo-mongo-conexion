@@ -411,12 +411,12 @@ def insercion_inicial_coleccion_invitados() -> None:
     except Exception as e:
         print("Error al realizar la inserción masiva de invitados: {}".format(e))
 
-#insercion_inicial_coleccion_eventos()
-#insercion_inicial_coleccion_invitados()
+insercion_inicial_coleccion_eventos()
+insercion_inicial_coleccion_invitados()
 
-#limpiar la base de datos
-#coleccion_invitados.drop()
-#coleccion_eventos.drop()
+#limpiar_la_base_de_datos()
+coleccion_invitados.drop()
+coleccion_eventos.drop()
 
 funciones.menu(coleccion_eventos, coleccion_invitados)
 
